@@ -18,7 +18,10 @@ def get_cursor():
 def request_data():
     s = requests.Session()
     s.headers = {"Authorization": config['COPA_API_TOKEN']}
-    return s.get(config['COPA_API_URL'] + "/globalspeed/users/").json()
+    response = s.get(config['COPA_API_URL'] + "/globalspeed/users/")
+    if response.status_code != 200:
+        raise ConnectionError(response.text)
+    return response.json()
 
 
 def main():
